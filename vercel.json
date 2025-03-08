@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "app.py",  // This is the main entry point to your Flask app
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",  // All routes will be handled by Flask
+      "dest": "app.py"
+    }
+  ]
+}
