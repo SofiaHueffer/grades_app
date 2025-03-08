@@ -1,0 +1,338 @@
+body {
+    background-color: #aad0ce;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding-top: 80px;
+}
+
+/* Top Banner */
+.banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #2c3e50;
+    padding: 10px 0px; 
+    color: white;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.logo {
+    height: 50px; 
+    visibility: hidden;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    padding-right: 20px; 
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-links a:hover {
+    color: #aad0ce;
+}
+
+/* Intro */
+
+.intro-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f4f4f4;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    margin-top: 5px;
+}
+
+.welcome-section {
+    flex: 1;
+    text-align: left;
+    padding: 30px;
+    opacity: 0; 
+    transform: translateY(20px);
+    animation: pop-up 1s ease-out forwards;
+}
+
+.welcome-section h2 {
+    font-size: 30px; 
+    animation-delay: 0.2s;
+}
+ 
+.welcome-section h3 {
+    font-size: 20px; 
+    margin: 1px;   
+    padding: 1px; 
+    animation-delay: 0.4s; 
+}
+
+@keyframes pop-up {
+    0% {
+        opacity: 0;
+        transform: translateY(20px); 
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); 
+    }
+}
+
+.overview-table {
+    flex: 1;
+    text-align: center;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0; 
+    transform: translateY(20px);
+    animation: pop-up 1s ease-out forwards;
+    animation-delay: 0.6s;
+}
+
+/* Tables */
+.table-section {
+    margin: 35px auto;
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px solid #ccc; 
+    width: 90%; 
+    background-color: #f9f9f9; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    overflow-x: auto;
+    position: center;
+}
+
+table {
+    width: 100%; 
+    border-collapse: collapse; 
+    border: None;
+    table-layout: auto;
+    box-sizing: border-box;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: none;
+}
+
+td:first-child, th:first-child {
+    position: sticky;
+    left: 0;
+    background-color: #f9f9f9;  
+    z-index: 2;  
+}
+
+td:nth-last-child(3), th:nth-last-child(3) {
+    position: sticky;
+    right: 0;
+    background-color: #f9f9f9;
+    z-index: 2;
+}
+
+/* Target */
+.header-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+h1 {
+    flex-grow: 1; 
+    text-align: center;
+    margin: 0;
+}
+
+.target-score-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    right: 0px; 
+}
+
+.tooltip-label {
+    position: relative;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.target-score-form input {
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    width: 75%;
+    transition: all 0.3s ease;
+}
+
+/* Bottom Banner */
+.outro-banner {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    width: 100%;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    bottom: 0;
+}
+
+.outro-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;  
+    margin: 0 auto;
+}
+
+.left-side {
+    text-align: left;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.right-side {
+    text-align: right;
+}
+
+.outro-banner a {
+    color: #aad0ce;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.outro-banner a:hover {
+    text-decoration: underline;
+}
+
+.outro-content p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.left-side p:first-child {
+    font-size: 18px;
+}
+
+
+/* Other Pages */
+.container {
+    padding: 25px;
+    margin: 15px auto;
+    border-radius: 15px;
+    border: 2px solid #ccc; 
+    width: 500px; 
+    background-color: #f9f9f9; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    overflow-x: auto;
+    position: center;
+}
+
+.container h2 {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.container button {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #9CB29D;
+    color: white;
+    border: none; 
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: none; 
+    margin-bottom: 20px;
+}
+
+.container input {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    width: 75%;
+    transition: all 0.3s ease;
+}
+
+.container select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    width: 80%;
+    transition: all 0.3s ease;
+}
+
+/* Update */
+.update_container label,
+.update_container select,
+.update_container input {
+    align-items: left;
+    font-size: 18px;
+    margin-bottom: 20px;
+    margin-top: 15px;
+}
+
+.update_container select {
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    width: 80%;
+    transition: all 0.3s ease;
+}
+
+/* Electives */
+.elective_container label,
+.elective_container select,
+.elective_container input {
+    align-items: left;
+    font-size: 19px;
+    margin-bottom: 14px;
+}
+
+.elective_container select {
+    padding: 10px;
+    font-size: 17px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    width: 80%;
+    transition: all 0.3s ease;
+}

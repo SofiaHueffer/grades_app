@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elective Selection</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="banner">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+        <nav class="nav-links">
+            <a href="{{ url_for('index') }}">Return Home</a>
+            <a href="{{ url_for('update_scores') }}">Update Score</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="elective_container">
+            <h2>Select Your Electives</h2>
+
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div> {{ form.elec_1() }} </div>
+                <div> {{ form.elec_2() }} </div>
+                <div> {{ form.elec_3() }} </div>
+                <div> {{ form.elec_4() }} </div>
+                <div> {{ form.elec_5() }} </div>
+                <button type="submit" name="skip" class="btn btn-secondary">Skip Electives</button>
+                <button type="submit">Choose Electives</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="outro-banner">
+        <div class="outro-content">
+            <div class="left-side">
+                <p>Made by Sofia Hueffer <span class="separator">|</span> All Rights Reserved</p>
+                <p>For any suggestions or issues, please contact </p>
+            </div>
+            <div class="right-side">
+            <p>Email: <a href="smhueffer@egmail.com">smhueffer@gmail.com</a></p>
+            <p>Phone: <a href="tel:07484254531">07484254531</a></p>
+        </div>
+    </div>
+</body>
+</html>

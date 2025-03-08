@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Target Score for Year {{ year }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <h1>Set Your Target Score for Year {{ year }}</h1>
+
+    <form method="POST" id="target-form">
+        {{ form.hidden_tag() }}
+        
+        <label for="target-input">{{ form.target.label }}</label>
+        {{ form.target(id="target-input") }}
+
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+</body>
+</html>

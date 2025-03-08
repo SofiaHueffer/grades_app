@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Sign Up</h2>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <p>{{ form.username.label }}: {{ form.username() }}</p>
+            <p>{{ form.password.label }}: {{ form.password() }}</p>
+            <p>{{ form.year.label }}: {{ form.year() }}</p>
+            <button type="submit" name="action" value="update">Sign Up</button>
+        </form>
+        {% for message in get_flashed_messages() %}
+            <p style="color:red;">{{ message }}</p>
+        {% endfor %}
+        <p>Already have an account? <a href="{{ url_for('login') }}">Log in here</a></p>
+    </div>
+</body>
+</html>
