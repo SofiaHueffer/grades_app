@@ -4,18 +4,18 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, Length
-import psycopg2
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = 'Host'
 
 conn = psycopg2.connect(
-    dbname="postgres",
-    user="postgres",
-    password="Mfritdajt42!", 
-    host="localhost",
-    port="5432")
+    dbname="sofia_hueffer",  
+    user="sofia_hueffer",   
+    password="f8s89vb5xz4z5",
+    host="imperial-2025.ckp3dl3vzxoh.eu-west-2.rds.amazonaws.com",  
+    port="5432"  
+)
 
 cur = conn.cursor()
 
@@ -412,4 +412,4 @@ def min_score(year):
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
