@@ -21,11 +21,6 @@ body {
     z-index: 1000;
 }
 
-.logo {
-    height: 50px; 
-    visibility: hidden;
-}
-
 .nav-links {
     display: flex;
     gap: 20px;
