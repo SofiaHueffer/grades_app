@@ -10,11 +10,12 @@ app = Flask(__name__)
 app.secret_key = 'Host'
 
 conn = psycopg2.connect(
-    dbname="postgres",
-    user="postgres",
-    password="Mfritdajt42!", 
-    host="localhost",
-    port="5432")
+    dbname="sofia_hueffer",  
+    user="sofia_hueffer",   
+    password="f8s89vb5xz4z5",
+    host="imperial-2025.ckp3dl3vzxoh.eu-west-2.rds.amazonaws.com",  
+    port="5432"  
+)
 
 cur = conn.cursor()
 
