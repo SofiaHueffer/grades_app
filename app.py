@@ -294,6 +294,7 @@ def update_scores():
         #change grade
         if action == 'update':
             score = float(request.form['new_score'])
+            flash("Score updated successfully", "success")
 
             grade = grade_name(score)
             cur.execute(f"""UPDATE {table_name}
@@ -390,6 +391,8 @@ def min_score(year):
     user_id = current_user.id
     target_score = request.form['target_score']
 
+    flash("Target Set", "success")
+
     table_name = f"Year_{year}"
 
     cur.execute(f"""ALTER TABLE {table_name} ADD COLUMN IF NOT EXISTS min_score real;""")
@@ -413,4 +416,4 @@ def min_score(year):
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(debug=True)
