@@ -19,15 +19,18 @@
         <div class="elective_container">
             <h2>Select Your Electives</h2>
 
-            <form method="POST">
+            <form method="POST" class="elective-form">
                 {{ form.hidden_tag() }}
                 <div> {{ form.elec_1() }} </div>
                 <div> {{ form.elec_2() }} </div>
                 <div> {{ form.elec_3() }} </div>
                 <div> {{ form.elec_4() }} </div>
                 <div> {{ form.elec_5() }} </div>
-                <button type="submit" name="skip" class="btn btn-secondary">Skip Electives</button>
-                <button type="submit">Choose Electives</button>
+                
+                <div class="button-container">
+                    <button type="submit" name="skip" class="btn btn-secondary skip-btn">Skip Electives</button>
+                    <button type="submit" class="btn btn-primary choose-btn">Choose Electives</button>
+                </div>     
             </form>
         </div>
     </div>

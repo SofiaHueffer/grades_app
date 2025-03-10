@@ -18,7 +18,7 @@
     <div class="container">
         <div class="update_container">
             <h2>Update Scores</h2>
-            <form action="{{ url_for('update_scores') }}" method="POST">
+            <form action="{{ url_for('update_scores') }}" method="POST" class="update-score-form">
 
                 <label for="module">Select Module:</label>
                 <select name="module" id="module" required>
@@ -42,8 +42,10 @@
                 <label for="new_score">Enter New Score:</label>
                 <input type="text" name="new_score" placeholder="Enter new score" /><br>
                 
-                <button type="submit" name="action" value="update">Update Score</button>
-                <button type="submit" name="action" value="reset">Reset Score</button>
+                <div class="button-container">
+                    <button type="submit" name="action" value="update" class="update-btn">Update Score</button>
+                    <button type="submit" name="action" value="reset" class="reset-btn">Reset Score</button>
+                </div>
             </form>
             {% for message in get_flashed_messages() %}
                 <p class="flash-message">{{ message }}</p>
