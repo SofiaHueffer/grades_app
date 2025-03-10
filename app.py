@@ -396,8 +396,6 @@ def min_score(year):
 
     table_name = f"Year_{year}"
     print('2 min score')
-    cur.execute(f"""ALTER TABLE {table_name} ADD COLUMN IF NOT EXISTS min_score real;""")
-    print('3 min score')
     cur.execute(f"""
         UPDATE {table_name}
         SET min_score = ((%s - COALESCE(find_weight.Total_Score)) / last_weight)*100
@@ -413,9 +411,9 @@ def min_score(year):
         ) AS find_weight
         WHERE {table_name}.module = find_weight.module AND {table_name}.UserID = find_weight.UserID;
     """, (target_score,))
-    print('4 min score')
+    print('3 min score')
     conn.commit()
-    print('5 min score')
+    print('4 min score')
     return redirect(url_for('index'))
     print('end min score')
 @app.route('/favicon.ico')
