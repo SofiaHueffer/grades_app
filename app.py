@@ -416,7 +416,11 @@ def min_score(year):
     print('4 min score')
     return redirect(url_for('index'))
     print('end min score')
+
 @app.route('/favicon.ico')
+def favicon():
+    return '', 204
+@app.route('/favicon.png')
 def favicon():
     return '', 204
 
