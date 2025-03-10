@@ -46,6 +46,9 @@
                 <button type="submit" name="action" value="reset">Reset Score</button>
                 <button type="submit" name="action" value="update">Update Score</button>
             </form>
+            {% for message in get_flashed_messages() %}
+                <p style="color:red;">{{ message }}</p>
+            {% endfor %}
         </div>
     </div>
 

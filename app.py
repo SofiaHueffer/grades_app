@@ -10,12 +10,11 @@ app = Flask(__name__)
 app.secret_key = 'Host'
 
 conn = psycopg2.connect(
-    dbname="sofia_hueffer",  
-    user="sofia_hueffer",   
-    password="f8s89vb5xz4z5",
-    host="imperial-2025.ckp3dl3vzxoh.eu-west-2.rds.amazonaws.com",  
-    port="5432"  
-)
+    dbname="postgres",
+    user="postgres",
+    password="Mfritdajt42!", 
+    host="localhost",
+    port="5432")
 
 cur = conn.cursor()
 
@@ -379,6 +378,7 @@ def update_scores():
                             WHERE Year = 'Overall' and UserID = %s""", (degree_current_score, degree_current_grade, user_id,))
 
         conn.commit()
+
         return redirect(url_for('update_scores'))
 
     return render_template("update.html", years=years, modules_by_year=modules_by_year)
@@ -386,6 +386,7 @@ def update_scores():
 @app.route('/minscore/<year>', methods=['GET', 'POST'])
 @login_required
 def min_score(year):
+    print('Starting min score')
     user_id = current_user.id
     target_score = request.form['target_score']
 
@@ -412,4 +413,4 @@ def min_score(year):
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
