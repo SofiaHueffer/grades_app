@@ -356,10 +356,12 @@ h1 {
 
 .update-btn {
     order: 2;
+    padding-right: 20px;
 }
 
 .reset-btn {
     order: 1; 
+    padding-left: 20px;
 }
 
 /* Electives */
@@ -391,8 +393,10 @@ h1 {
 
 .choose-btn {
     order: 2; 
+    padding-right: 20px;
 }
 
 .skip-btn {
     order: 1; 
+    padding-left: 20px;
 }
