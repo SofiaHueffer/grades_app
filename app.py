@@ -294,7 +294,7 @@ def update_scores():
 
         #change grade
         if action == 'update':
-            score = float(request.form['new_score'])
+            score = request.form['new_score']
             flash("Score updated successfully", "success")
 
             grade = grade_name(score)
