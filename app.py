@@ -416,5 +416,9 @@ def min_score(year):
     conn.commit()
     return redirect(url_for('index'))
 
+@app.route('/favicon.ico')
+def favicon():
+    return '', 204
+
 if __name__ == '__main__':
     app.run(debug=True)
