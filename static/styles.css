@@ -172,6 +172,7 @@ h1 {
     position: absolute;
     left: 0px; 
     margin-top: 8px;
+    margin-left: 10px;
 }
 
 .tooltip-label {
