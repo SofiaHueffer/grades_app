@@ -17,7 +17,7 @@
 
     <div class="container">
         <div class="update_container">
-            <h2>Update Scores</h2>
+            <h2>Update Exam Scores</h2>
             <form action="{{ url_for('update_scores') }}" method="POST">
 
                 <label for="module">Select Module:</label>
@@ -31,15 +31,15 @@
                     {% endfor %}
                 </select><br>
 
-                <label for="score_type">Select Score to Update:</label>
+                <label for="score_type">Select Exam to Update:</label>
                 <select name="score_type" id="score_type" required>
-                    <option value="score_1">Score 1</option>
-                    <option value="score_2">Score 2</option>
-                    <option value="score_3">Score 3</option>
-                    <option value="score_4">Score 4</option>
+                    <option value="score_1">Exam 1</option>
+                    <option value="score_2">Exam 2</option>
+                    <option value="score_3">Exam 3</option>
+                    <option value="score_4">Exam 4</option>
                 </select><br>
 
-                <label for="new_score">Enter New Score:</label>
+                <label for="new_score">Enter New Exam Score:</label>
                 <input type="number" name="new_score" placeholder="Enter new score" /><br>
 
                 <div class="button-container">

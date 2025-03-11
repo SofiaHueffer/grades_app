@@ -316,14 +316,6 @@ def update_scores():
         
         if result:
             weight_1, score_1, weight_2, score_2, weight_3, score_3, weight_4, score_4 = [0 if v is None else v for v in result]
-        
-            total_score = (weight_1 * score_1) + (weight_2 * score_2) + (weight_3 * score_3) + (weight_4 * score_4)
-            total_score = round(total_score/100, 2) if total_score > 0 else None
-            total_grade = grade_name(total_score)
-            
-            cur.execute(f"""UPDATE {table_name}
-                            SET Total_Score = %s, Total_Grade = %s
-                            WHERE Module = %s and UserID = %s""", (total_score, total_grade, module, user_id))
 
             current_score = ((weight_1 * score_1) + (weight_2 * score_2) + (weight_3 * score_3) + (weight_4 * score_4)) / ((
                 (weight_1 if score_1 > 0 else 0) + 
@@ -337,17 +329,19 @@ def update_scores():
             cur.execute(f"""UPDATE {table_name}
                             SET Current_Score = %s, Current_Grade = %s
                             WHERE Module = %s and UserID = %s""", (current_score, current_grade, module, user_id,))
+            total_score = (weight_1 * score_1) + (weight_2 * score_2) + (weight_3 * score_3) + (weight_4 * score_4)
+            total_score = round(total_score/100, 2) if total_score > 0 else None
+
+            if total_score == current_score:
+                total_grade = grade_name(total_score)
+            else:
+                total_grade = "-"
+            
+            cur.execute(f"""UPDATE {table_name}
+                            SET Total_Score = %s, Total_Grade = %s
+                            WHERE Module = %s and UserID = %s""", (total_score, total_grade, module, user_id))
 
         #update year score
-        cur.execute(f"""SELECT SUM(COALESCE(Credits, 0) * COALESCE(Total_Score, 0))/sum(COALESCE(Credits, 0)) FROM {table_name} WHERE UserID = %s""", (user_id,))
-        year_total_score = cur.fetchone()[0]
-        year_total_score = round(year_total_score, 2) if year_total_score > 0 else None
-        year_total_grade = grade_name(year_total_score)
-
-        cur.execute(f"""UPDATE Overview
-                            SET Total_Score = %s, Total_Grade = %s
-                            WHERE Year = %s and UserID = %s""", (year_total_score, year_total_grade, year, user_id,))
-        
         cur.execute(f"""SELECT sum(COALESCE(Credits, 0) * COALESCE(Total_Score, 0))/
             nullif(sum(COALESCE(Credits, 0) * COALESCE(Total_Score, 0) * 1/NULLIF(Current_Score, 0)),0) FROM {table_name} WHERE UserID = %s""", (user_id,))
         year_current_score = cur.fetchone()[0]
@@ -358,16 +352,20 @@ def update_scores():
                             SET Current_Score = %s, Current_Grade = %s
                             WHERE Year = %s and UserID = %s""", (year_current_score, year_current_grade, year, user_id,))
 
-        #update degree score
-        cur.execute(f"""SELECT SUM(Weighting * COALESCE(Total_Score, 0)) FROM Overview where Year != 'Overall' and UserID = %s""", (user_id,))
-        degree_total_score = cur.fetchone()[0]/100
-        degree_total_score = round(degree_total_score, 2) if degree_total_score > 0 else None
-        degree_total_grade = grade_name(degree_total_score)
+        cur.execute(f"""SELECT SUM(COALESCE(Credits, 0) * COALESCE(Total_Score, 0))/sum(COALESCE(Credits, 0)) FROM {table_name} WHERE UserID = %s""", (user_id,))
+        year_total_score = cur.fetchone()[0]
+        year_total_score = round(year_total_score, 2) if year_total_score > 0 else None
+
+        if year_total_score == year_current_score:
+            year_total_grade = grade_name(year_total_score)
+        else:
+            year_total_grade = "-"
 
         cur.execute(f"""UPDATE Overview
                             SET Total_Score = %s, Total_Grade = %s
-                            WHERE Year = 'Overall' and UserID = %s""", (degree_total_score, degree_total_grade, user_id,))
-
+                            WHERE Year = %s and UserID = %s""", (year_total_score, year_total_grade, year, user_id,))
+        
+        #update degree score
         cur.execute(f"""SELECT sum(COALESCE(Weighting, 0) * COALESCE(Total_Score, 0))/
             nullif(sum(COALESCE(Weighting, 0) * COALESCE(Total_Score, 0) * 1/NULLIF(Current_Score, 0)),0) FROM Overview
             WHERE Year != 'Overall' and UserID = %s""", (user_id,))
@@ -378,6 +376,19 @@ def update_scores():
         cur.execute(f"""UPDATE Overview
                             SET Current_Score = %s, Current_Grade = %s
                             WHERE Year = 'Overall' and UserID = %s""", (degree_current_score, degree_current_grade, user_id,))
+
+        cur.execute(f"""SELECT SUM(Weighting * COALESCE(Total_Score, 0)) FROM Overview where Year != 'Overall' and UserID = %s""", (user_id,))
+        degree_total_score = cur.fetchone()[0]/100
+        degree_total_score = round(degree_total_score, 2) if degree_total_score > 0 else None
+
+        if degree_total_score == degree_current_score:
+            degree_total_grade = grade_name(degree_total_score)
+        else: 
+            degree_total_grade = "-"
+
+        cur.execute(f"""UPDATE Overview
+                            SET Total_Score = %s, Total_Grade = %s
+                            WHERE Year = 'Overall' and UserID = %s""", (degree_total_score, degree_total_grade, user_id,))
 
         conn.commit()
 
@@ -392,7 +403,7 @@ def min_score(year):
     user_id = current_user.id
     target_score = request.form['target_score']
 
-    flash("Target Set", "success")
+    flash(f"Target Set to {target_score}", "success")
 
     table_name = f"Year_{year}"
     print('2 min score')

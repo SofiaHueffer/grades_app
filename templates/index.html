@@ -74,20 +74,20 @@
                 <tr>
                     <td>{{ row[0] }}</td> 
                     <td>{{ row[1] }}</td> 
-                    <td>{{ row[3] }} {{ row[4] }} {% if row[2] %}
+                    <td>{{ row[3] }} <i>{{ row[4] }}</i> {% if row[2] %}
                         <span style="font-size: 0.8em; color: gray;"> ({{ row[2] }}%)</span>
                     {% endif %}</td> 
-                    <td>{{ row[6] }}  {{ row[7] }} {% if row[5] %}
+                    <td>{{ row[6] }}  <i>{{ row[7] }}</i> {% if row[5] %}
                         <span style="font-size: 0.8em; color: gray;"> ({{ row[5] }}%)</span>
                     {% endif %}</td> 
-                    <td>{{ row[9] }} {{ row[10] }} {% if row[8] %}
+                    <td>{{ row[9] }} <i>{{ row[10] }}</i> {% if row[8] %}
                         <span style="font-size: 0.8em; color: gray;"> ({{ row[8] }}%)</span>
                     {% endif %}</td> 
-                    <td>{{ row[12] }} {{ row[13] }} {% if row[11] %}
+                    <td>{{ row[12] }} <i>{{ row[13] }}</i> {% if row[11] %}
                         <span style="font-size: 0.8em; color: gray;"> ({{ row[11] }}%)</span>
                     {% endif %}</td> 
-                    <td>{{ row[14] }} {{ row[15] }}</td> 
-                    <td>{{ row[16] }} {{ row[17] }}</td>
+                    <td>{{ row[14] }} <i>{{ row[15] }}</i></td> 
+                    <td>{{ row[16] }} <i>{{ row[17] }}</i></td>
                     <td>{% if row[18] != "" %}{{ row[18] | float | round(1) }}{% else %}{{ row[18] }}{% endif %}</td>
                 </tr>
                 {% endfor %}
@@ -125,20 +125,20 @@
                 <tr>
                     <td>{{ row[0] }}</td> 
                     <td>{{ row[1] }}</td> 
-                    <td>{{ row[3] }} {{ row[4] }} {% if row[2] %}
+                    <td>{{ row[3] }} <i>{{ row[4] }}</i> {% if row[2] %}
                         <span style="font-size: 0.8em; color: gray;"> ({{ row[2] }}%)</span>
                     {% endif %}</td> 
-                    <td>{{ row[6] }}  {{ row[7] }} {% if row[5] %}
+                    <td>{{ row[6] }}  <i>{{ row[7] }}</i> {% if row[5] %}
                         <span style="font-size: 0.8em; color: gray;"> ({{ row[5] }}%)</span>
                     {% endif %}</td> 
-                    <td>{{ row[9] }} {{ row[10] }} {% if row[8] %}
+                    <td>{{ row[9] }} <i>{{ row[10] }}</i> {% if row[8] %}
                         <span style="font-size: 0.8em; color: gray;"> ({{ row[8] }}%)</span>
                     {% endif %}</td> 
-                    <td>{{ row[12] }} {{ row[13] }} {% if row[11] %}
+                    <td>{{ row[12] }} <i>{{ row[13] }} {% if row[11] %}
                         <span style="font-size: 0.8em; color: gray;"> ({{ row[11] }}%)</span>
                     {% endif %}</td> 
-                    <td>{{ row[14] }} {{ row[15] }}</td> 
-                    <td>{{ row[16] }} {{ row[17] }}</td>
+                    <td>{{ row[14] }} <i>{{ row[15] }}</i></td> 
+                    <td>{{ row[16] }} <i>{{ row[17] }}</i></td>
                     <td>{% if row[18] != "" %}{{ row[18] | float | round(1) }}{% else %}{{ row[18] }}{% endif %}</td>
                 </tr>
                 {% endfor %}
@@ -176,17 +176,17 @@
                 <tr>
                     <td>{{ row[0] }}</td> 
                     <td>{{ row[1] }}</td> 
-                    <td>{{ row[3] }} {{ row[4] }} {% if row[2] %}
+                    <td>{{ row[3] }} <i>{{ row[4] }}</i> {% if row[2] %}
                         <span style="font-size: 0.8em; color: gray;"> ({{ row[2] }}%)</span>
                     {% endif %}</td> 
-                    <td>{{ row[6] }}  {{ row[7] }} {% if row[5] %}
+                    <td>{{ row[6] }}  <i>{{ row[7] }}</i> {% if row[5] %}
                         <span style="font-size: 0.8em; color: gray;"> ({{ row[5] }}%)</span>
                     {% endif %}</td> 
-                    <td>{{ row[9] }} {{ row[10] }} {% if row[8] %}
+                    <td>{{ row[9] }} <i>{{ row[10] }}</i> {% if row[8] %}
                         <span style="font-size: 0.8em; color: gray;"> ({{ row[8] }}%)</span>
                     {% endif %}</td> 
-                    <td>{{ row[14] }} {{ row[15] }}</td> 
-                    <td>{{ row[16] }} {{ row[17] }}</td>
+                    <td>{{ row[14] }} <i>{{ row[15] }}</i></td> 
+                    <td>{{ row[16] }} <i>{{ row[17] }}</i></td>
                     <td>{% if row[18] != "" %}{{ row[18] | float | round(1) }}{% else %}{{ row[18] }}{% endif %}</td>
                 </tr>
                 {% endfor %}
