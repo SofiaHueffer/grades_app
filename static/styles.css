@@ -165,15 +165,20 @@ h1 {
     margin-top: 8px;
 }
 
+.update {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    left: 0px; 
+    margin-top: 8px;
+}
+
 .tooltip-label {
     position: relative;
     cursor: pointer;
     margin-bottom: 3px;
     font-size: 15px;
-}
-
-.Update {
-    left: 0px;
 }
 
 .target-score-form input {
