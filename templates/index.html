@@ -49,7 +49,7 @@
         <div class="table-section">
             <div class="header-container">
                 <h1>Year 1</h1>
-                <a href="{{ url_for('update_scores') }}">Update Scores</a>
+                <a href="{{ url_for('update_scores') }}" class = "Update">Update Scores</a>
                 <form action="{{ url_for('min_score', year='1') }}" method="POST" class="target-score-form">
                     <label for="target_score" class="tooltip-label" data-toggle="tooltip" title="Set target to calculate min score required">Set Target Score for all Modules:</label>
                     <input type="number" id="target_score" name="target_score" required>
@@ -100,7 +100,7 @@
         <div class="table-section">
             <div class="header-container">
                 <h1>Year 2</h1>
-                <a href="{{ url_for('update_scores') }}">Update Scores</a>
+                <a href="{{ url_for('update_scores') }}" class = "Update">Update Scores</a>
                 <form action="{{ url_for('min_score', year='2') }}" method="POST" class="target-score-form">
                     <label for="target_score" class="tooltip-label" data-toggle="tooltip" title="Set target to calculate min score required">Set Target Score for all Modules:</label>
                     <input type="number" id="target_score" name="target_score" required>
@@ -152,7 +152,7 @@
         <div class="table-section">
             <div class="header-container">
                 <h1>Year 3</h1>
-                <a href="{{ url_for('update_scores') }}">Update Scores</a>
+                <a href="{{ url_for('update_scores') }}" class = "Update">Update Scores</a>
                 <form action="{{ url_for('min_score', year='3') }}" method="POST" class="target-score-form">
                     <label for="target_score" class="tooltip-label" data-toggle="tooltip" title="Set target to calculate min score required">Set Target Score for all Modules:</label>
                     <input type="number" id="target_score" name="target_score" required>

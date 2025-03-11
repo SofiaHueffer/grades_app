@@ -172,6 +172,10 @@ h1 {
     font-size: 15px;
 }
 
+.Update {
+    left: 0px;
+}
+
 .target-score-form input {
     padding: 3px;
     font-size: 12px;
