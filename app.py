@@ -419,7 +419,7 @@ def min_score(year):
 
 @app.route('/favicon.ico')
 def favicon():
-    return '', 204
+    return '', 205
 @app.route('/favicon.png')
 def favicon():
     return '', 204
