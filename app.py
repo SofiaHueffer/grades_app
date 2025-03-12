@@ -5,16 +5,19 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, Length
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 app = Flask(__name__)
-app.secret_key = 'Host'
+app.secret_key = os.environ.get('FLASK_SECRET_KEY')
 
 conn = psycopg2.connect(
-    dbname="sofia_hueffer",  
-    user="sofia_hueffer",   
-    password="f8s89vb5xz4z5",
-    host="imperial-2025.ckp3dl3vzxoh.eu-west-2.rds.amazonaws.com",  
-    port="5432"  
+    dbname=os.environ.get('DB_NAME'),
+    user=os.environ.get('DB_USER'),
+    password=os.environ.get('DB_PASSWORD'),
+    host=os.environ.get('DB_HOST'),
+    port=os.environ.get('DB_PORT')
 )
 
 cur = conn.cursor()
