@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deadlines</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="banner">
+        <nav class="nav-links">
+            <a href="{{ url_for('index') }}">Return Home</a>
+            <a href="{{ url_for('update_scores') }}">Update Scores</a>
+            <a href="{{ url_for('electives') }}">Choose Electives</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </div>
+
+    <div class="deadlines-table-section">
+        <h1>Deadlines</h1>
+        <table>
+         <tr>
+            <th>Module</th>
+            <th>Weight (%)</th>
+            <th>Date</th>
+            <th>Group Work?</th>
+            <th>Days Left</th>
+        </tr>
+        {% for row in Deadlines %}
+        <tr style="background-color: {{ module_colours.get(row[0], '#FFFFFF') }};">
+            {% for item in row %}
+                <td>{{ item }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

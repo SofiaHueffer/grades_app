@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, Length
 from werkzeug.security import generate_password_hash, check_password_hash
-import os
+#import os
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('FLASK_SECRET_KEY')
@@ -428,6 +428,44 @@ def min_score(year):
     print('4 min score')
     return redirect(url_for('index'))
     print('end min score')
+
+@app.route('/deadlines', methods=['GET', 'POST'])
+@login_required
+def deadlines():
+    user_id = current_user.id
+    cur.execute(f"select Year from users where id = %s", (user_id,))
+    user_year = cur.fetchone()[0] 
+
+    cur.execute("""UPDATE Deadlines SET days_left = Date - CURRENT_DATE""")
+    conn.commit()
+
+    cur.execute("SELECT DISTINCT module FROM Deadlines WHERE Year = %s", (user_year,))
+    all_modules = [row[0] for row in cur.fetchall()]
+
+    colours = ["#FFADAD", "#FFD6A5", "#FDFFB6", "#CAFFBF", "#9BF6FF", 
+        "#A0C4FF", "#BDB2FF", "#FFC6FF", "#FFB5E8", "#85E3FF"]
+
+    module_colours = {module: colours[i % len(colours)] for i, module in enumerate(all_modules)}
+
+    from datetime import datetime
+
+    def replace_none_with_blank(rows):
+        processed_rows = []
+        for row in rows:
+            row = list(row) 
+            if row[2]:
+                row[2] = row[2].strftime('%d %B')
+            row[1] = int(row[1]) if row[1] is not None else ""  
+            row[3] = "Yes" if row[3] else ""        
+            processed_rows.append(row)
+        return processed_rows
+
+    cur.execute("""SELECT module, weight, date, group_work, days_left
+                   FROM Deadlines WHERE Year = %s AND days_left > 0 order by date""", (user_year,))
+    dl = replace_none_with_blank(cur.fetchall())
+
+    return render_template("deadlines.html", Deadlines=dl, module_colours=module_colours)
+
 
 @app.route('/favicon.ico')
 @app.route('/favicon.png')

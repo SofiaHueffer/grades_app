@@ -11,6 +11,7 @@
         <nav class="nav-links">
             <a href="{{ url_for('index') }}">Return Home</a>
             <a href="{{ url_for('electives') }}">Choose Electives</a>
+            <a href="{{ url_for('deadlines') }}">Deadlines</a>
             <a href="{{ url_for('logout') }}">Logout</a>
         </nav>
     </div>
@@ -52,18 +53,5 @@
             {% endfor %}
         </div>
     </div>
-
-    <div class="outro-banner">
-        <div class="outro-content">
-            <div class="left-side">
-                <p>Made by Sofia Hueffer <span class="separator">|</span> All Rights Reserved</p>
-                <p>For any suggestions or issues, please contact </p>
-            </div>
-            <div class="right-side">
-            <p>Email: smhueffer@gmail.com</p>
-            <p>Phone: 07484254531</p>
-        </div>
-    </div>
-
 </body>
 </html>
