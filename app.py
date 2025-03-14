@@ -461,7 +461,7 @@ def deadlines():
         return processed_rows
 
     cur.execute("""SELECT module, weight, date, group_work, days_left
-                   FROM Deadlines WHERE Year = %s AND days_left > 0 order by date""", (user_year,))
+                   FROM Deadlines WHERE Year = %s AND days_left >= 0 order by date""", (user_year,))
     dl = replace_none_with_blank(cur.fetchall())
 
     return render_template("deadlines.html", Deadlines=dl, module_colours=module_colours)
