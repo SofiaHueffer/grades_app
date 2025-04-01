@@ -524,4 +524,12 @@ h1 {
     .container {
         width: 80%;
     }
+
+    .button-container {
+        gap: 2px;
+    }
+
+    .button-container button {
+        margin: 5px;
+    }
 }
