@@ -467,7 +467,7 @@ def min_score(year):
     """, (target_score,))
 
     conn.commit()
-    return redirect(url_for('index'))
+    return redirect(url_for('grades'))
 
 @app.route('/deadlines', methods=['GET', 'POST'])
 @login_required
