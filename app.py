@@ -476,6 +476,8 @@ def deadlines():
     cur.execute(f"select Year from users where id = %s", (user_id,))
     user_year = cur.fetchone()[0] 
 
+    from datetime import datetime
+
     cur.execute("""UPDATE Deadlines SET days_left = Date - CURRENT_DATE""")
     conn.commit()
 
@@ -511,6 +513,8 @@ def studyinfo(user_id, cur):
         WHERE UserID = %s
     """, (user_id,))
     total_hours = cur.fetchone()[0] or 0
+
+    from datetime import datetime
 
     today = datetime.now()
     days_since_monday = today.weekday() 
