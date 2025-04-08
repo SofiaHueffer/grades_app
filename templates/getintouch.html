@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
-    <title>Choose Electives</title>
+    <title>Get in Touch</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
@@ -28,24 +28,27 @@
         </nav>
     </div>
 
-    <div class="container">
-        <div class="elective_container">
-            <h2>Select Your Electives</h2>
-
+    <div class="get_in_touch-container">
+        <div class="left-box">
+            <h2>Get in Touch</h2>
             <form method="POST">
-                {{ form.hidden_tag() }}
-                <div> {{ form.elec_1() }} </div>
-                <div> {{ form.elec_2() }} </div>
-                <div> {{ form.elec_3() }} </div>
-                <div> {{ form.elec_4() }} </div>
-                <div> {{ form.elec_5() }} </div>
-
-                <div class="button-container">
-                    <button type="submit" class="btn btn-primary choose-btn">Choose Electives</button>
-                    <button type="submit" name="skip" class="btn btn-secondary skip-btn">Skip Electives</button>
-                </div>     
+                <textarea name="message" rows="6" required placeholder="Write message here"></textarea>
+                <button type="submit">Send</button>
             </form>
         </div>
+        <div class="right-box">
+            <a href="https://forms.gle/fwBaNPWCTq5SEeKP8" target="_blank">Suggestions and Thoughts Form</a>
+            <a href="https://ibconnect.imperial.ac.uk/IBstudents2024/blog/student-support-directory/300001015/" target="_blank">Student Support</a>
+            {% if user_year == '2023-2026' %}
+                <a href=https://chat.whatsapp.com/JmZ7DcDfehm1vUxN9NVsdK target="_blank">WhatsApp Chat</a>
+            {% elif user_year == '2024-2027' %}
+                <a href="https://forms.office.com/e/3cvVyHnFM5" target="_blank">Feedback Form</a>
+            {% endif %}
+            <br>
+            <p>Made by Sofia Hueffer</p>
+            <p>Email: smhueffer@gmail.com</p>
+            <p>Phone: 07484254531</p>
+        </div>
     </div>
+
 </body>
-</html>

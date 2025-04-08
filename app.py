@@ -6,6 +6,8 @@ from wtforms import StringField, PasswordField, SelectField, SubmitField, Intege
 from wtforms.validators import DataRequired, Length
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+from datetime import datetime, timedelta
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('FLASK_SECRET_KEY')
@@ -151,6 +153,48 @@ def index():
     def replace_none_with_blank(rows):
         return [[cell if cell is not None else "" for cell in row] for row in rows]
 
+    cur.execute("SELECT Year, Weighting, Current_Score, Current_Grade FROM Overview WHERE UserID = %s AND Current_Score is not null ORDER BY Year;", (user_id,))
+    rows = replace_none_with_blank(cur.fetchall())
+
+    value = max(len(rows) - 1, 1)
+
+    table_name = f"Year_{value}"
+    query = f"""
+        SELECT Module, Credits, Current_Score, Current_Grade
+        FROM {table_name}
+        WHERE UserID = %s AND Current_Score != Total_Score
+        ORDER BY Module;
+    """
+    cur.execute(query, (user_id,))
+
+    curr_year = replace_none_with_blank(cur.fetchall())
+
+    total_hours, total_week_hours, badge, streak = studyinfo(user_id, cur)
+
+    cur.execute("SELECT Task, Notes, Due_Date FROM Tasks WHERE UserID = %s", (user_id,))
+    task_list = cur.fetchall()
+
+    cur.execute("""SELECT module, days_left
+                   FROM Deadlines WHERE Year = %s AND days_left >= 0 AND days_left <= 5 order by date""", (user_year,))
+    deadlines = cur.fetchall() or []
+
+    return render_template("index.html", Overview=rows, value=value, Curr_Year=curr_year, 
+        username=username, user_year=user_year,  
+        badge=badge, streak=streak, task_list=task_list, 
+        deadlines=deadlines, user_value=value)
+
+@app.route('/grades')
+@login_required
+def grades():
+    user_id = current_user.id
+    cur.execute(f"select username, Year from users where id = %s", (user_id,))
+    user_data = cur.fetchone()
+    username = user_data[0]
+    user_year = user_data[1]
+
+    def replace_none_with_blank(rows):
+        return [[cell if cell is not None else "" for cell in row] for row in rows]
+
     cur.execute("SELECT Year, Weighting, Current_Score, Current_Grade, Total_Score, Total_Grade FROM Overview WHERE UserID = %s ORDER BY Year;", (user_id,))
     rows = replace_none_with_blank(cur.fetchall())
 
@@ -163,7 +207,7 @@ def index():
     cur.execute("SELECT Module, Credits, Weight_1, Score_1, Grade_1, Weight_2, Score_2, Grade_2, Weight_3, Score_3, Grade_3, Weight_4, Score_4, Grade_4, Current_Score, Current_Grade, Total_Score, Total_Grade, min_score FROM Year_3 WHERE UserID = %s ORDER BY Module;", (user_id,))
     three = replace_none_with_blank(cur.fetchall())
 
-    return render_template("index.html", Overview=rows, row_count=len(rows), 
+    return render_template("grades.html", Overview=rows, row_count=len(rows), 
         Year_1=one, one_count=len(one), Year_2=two, two_count=len(two), 
         Year_3=three, three_count=len(three), username=username, user_year=user_year)
 
@@ -400,14 +444,12 @@ def update_scores():
 @app.route('/minscore/<year>', methods=['GET', 'POST'])
 @login_required
 def min_score(year):
-    print('Starting min score')
     user_id = current_user.id
     target_score = request.form['target_score']
 
     flash(f"Target Set to {target_score}", "success")
 
     table_name = f"Year_{year}"
-    print('2 min score')
     cur.execute(f"""
         UPDATE {table_name}
         SET min_score = ((%s - COALESCE(find_weight.Total_Score)) / last_weight)*100
@@ -423,11 +465,9 @@ def min_score(year):
         ) AS find_weight
         WHERE {table_name}.module = find_weight.module AND {table_name}.UserID = find_weight.UserID;
     """, (target_score,))
-    print('3 min score')
+
     conn.commit()
-    print('4 min score')
     return redirect(url_for('index'))
-    print('end min score')
 
 @app.route('/deadlines', methods=['GET', 'POST'])
 @login_required
@@ -447,8 +487,6 @@ def deadlines():
 
     module_colours = {module: colours[i % len(colours)] for i, module in enumerate(all_modules)}
 
-    from datetime import datetime
-
     def replace_none_with_blank(rows):
         processed_rows = []
         for row in rows:
@@ -466,11 +504,188 @@ def deadlines():
 
     return render_template("deadlines.html", Deadlines=dl, module_colours=module_colours)
 
+def studyinfo(user_id, cur):
+    cur.execute("""
+        SELECT SUM(Hours + (Mins / 60.0)) 
+        FROM Study_Log 
+        WHERE UserID = %s
+    """, (user_id,))
+    total_hours = cur.fetchone()[0] or 0
 
+    today = datetime.now()
+    days_since_monday = today.weekday() 
+    this_week_monday = datetime.combine((today - timedelta(days=days_since_monday)).date(), datetime.min.time())
+
+    cur.execute("""
+        SELECT SUM(Hours + (Mins / 60.0)) 
+        FROM Study_Log 
+        WHERE UserID = %s AND Date >= %s
+    """, (user_id, this_week_monday.strftime('%Y-%m-%d %H:%M:%S')))
+
+    total_week_hours = cur.fetchone()[0] or 0
+
+    if total_week_hours >= 20:
+        badge = "Platinum"
+    elif total_week_hours >= 15:
+        badge = "Gold"
+    elif total_week_hours >= 10:
+        badge = "Silver"
+    elif total_week_hours >= 5:
+        badge = "Bronze"
+    else:
+        badge = "Keep studying!"
+
+    cur.execute("""
+        SELECT DISTINCT Date
+        FROM Study_Log
+        WHERE UserID = %s AND (Hours > 0 OR Mins > 0)
+        ORDER BY Date DESC
+    """, (user_id,))
+    study_dates = [row[0] for row in cur.fetchall()]
+
+    streak = 0
+    for i, log_date in enumerate(study_dates):
+        expected_date = today.date() - timedelta(days=i)
+        if log_date == expected_date:
+            streak += 1
+        else:
+            break  
+
+    return total_hours, total_week_hours, badge, streak
+
+def format_date(date_obj):
+    return date_obj.strftime("%d %B %Y")
+
+@app.route('/studylogs', methods=['Get', 'Post'])
+@login_required
+def studylog():
+    user_id = current_user.id
+
+    #manual
+    hours_logged = request.form.get('hours_logged', type=int, default = 0)
+    minutes_logged = request.form.get('minutes_logged', type=int, default = 0)
+    date_logged = datetime.now().strftime('%Y-%m-%d')
+
+    if hours_logged > 0 or minutes_logged > 0:
+            cur.execute("""
+                INSERT INTO Study_Log (UserID, Date, Hours, Mins) 
+                VALUES (%s, %s, %s, %s)
+            """, (user_id, date_logged, hours_logged, minutes_logged))
+
+    conn.commit()
+
+    total_hours, total_week_hours, badge, streak = studyinfo(user_id, cur)
+
+    cur.execute("SELECT Date, Hours, Mins FROM Study_Log WHERE UserID = %s order by Date desc", (user_id,))
+    logs = cur.fetchall()
+
+    logs = [(format_date(log[0]), log[1], log[2]) for log in logs]
+
+    level = round(total_hours/10)
+    
+    return render_template("studylogs.html", total_week_hours=total_week_hours, badge=badge, streak=streak, logs=logs, level=level)
+
+@app.route('/tasks', methods=['GET', 'POST'])
+@login_required
+def tasks():
+    user_id = current_user.id
+
+    if request.method == 'POST':
+        task = request.form.get('task')
+
+        def clean_input(value):
+            return value.strip() if value and value.strip() else None
+
+        notes = clean_input(request.form.get('notes'))
+        due_date = clean_input(request.form.get('due_date'))
+
+        remove = request.form.get('remove')
+
+        if task:
+            cur.execute("""
+                INSERT INTO Tasks (UserID, Task, Notes, Due_Date) 
+                VALUES (%s, %s, %s, %s)
+            """, (user_id, task, notes, due_date))
+            conn.commit()
+
+        if remove:
+            cur.execute("""
+                DELETE FROM Tasks WHERE UserID = %s AND Task = %s
+            """, (user_id, remove))
+            conn.commit()
+
+    cur.execute("SELECT Task FROM Tasks WHERE UserID = %s", (user_id,))
+    tasks = cur.fetchall()
+
+    cur.execute("SELECT Task, Notes, Due_Date FROM Tasks WHERE UserID = %s", (user_id,))
+    task_list = cur.fetchall()
+
+    return render_template("tasks.html", tasks=tasks, task_list=task_list)
+
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'smhueffer@gmail.com'
+app.config['MAIL_PASSWORD'] = 'ncpu higc mtgl lyng'
+app.config['MAIL_DEFAULT_SENDER'] = 'smhueffer@gmail.com'
+
+mail = Mail(app)
+
+@app.route('/getintouch', methods=['GET', 'POST'])
+@login_required
+def get_in_touch():
+    user_id = current_user.id
+    cur.execute(f"select Year from users where id = %s", (user_id,))
+    user_year = cur.fetchone()[0] 
+
+    if request.method == 'POST':
+        message_content = request.form.get('message')
+
+        user = getattr(current_user, 'username', f'User ID {current_user.id}')
+
+        msg = Message(subject=f'New Message from {user}',
+                      recipients=['smhueffer@gmail.com']) 
+        msg.body = f"""
+        New message from a user:
+
+        From: {user} ID: {user_id} Year: {user_year}
+
+        Message:
+        {message_content}
+        """
+
+        try:
+            mail.send(msg)
+            flash('Message sent! Thanks for reaching out.', 'success')
+        except Exception as e:
+            flash(f'Could not send message: {str(e)}', 'danger')
+
+        return redirect(url_for('get_in_touch'))
+
+    return render_template("getintouch.html", user_year=user_year)
+
+@app.route('/examtimetable', methods=['GET', 'POST'])
+@login_required
+def exam_timetable():
+    user_id = current_user.id
+    cur.execute(f"select Year from users where id = %s", (user_id,))
+    user_year = cur.fetchone()[0] 
+
+    cur.execute("""SELECT Module, Date, Time
+                   FROM Exam_Timetable WHERE Year = %s""", (user_year,))
+    exam = cur.fetchall() 
+
+    exam = [(log[0], format_date(log[1]), log[2]) for log in exam]
+
+    return render_template("examtimetable.html", exam=exam)
+
+"""
 @app.route('/favicon.ico')
 @app.route('/favicon.png')
 def favicon():
     return '', 204
+"""
 
 if __name__ == '__main__':
     app.run(debug=True)

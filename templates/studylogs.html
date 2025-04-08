@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+    <title>Study Log</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="banner">
+        <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='images/biglogo.png') }}" class="big-logo" alt="Logo">
+        </a>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">&#9776;</label>
+        <nav class="nav-links">
+            <a href="{{ url_for('index') }}">Return Home</a>
+            <a href="{{ url_for('grades') }}">Grades</a>
+            <a href="{{ url_for('studylog') }}">Study Log</a>
+            <a href="{{ url_for('tasks') }}">Tasks</a>
+            <a href="{{ url_for('deadlines') }}">Deadlines</a>
+            <a href="{{ url_for('exam_timetable') }}">Exam Timetable</a>
+            <a href="{{ url_for('update_scores') }}">Update Scores</a>
+            <a href="{{ url_for('electives') }}">Choose Electives</a>
+            <a href="{{ url_for('get_in_touch') }}">Get in Touch</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </div>
+
+    <div class="form-container">
+        <div class="task-form left">
+            <h3>Log Hours Studied</h3>
+            <form action="{{ url_for('studylog') }}" method="POST">
+                <label for="hours_logged">Hours Studied:</label>
+                <input type="number" id="hours_logged" name="hours_logged" required>
+                <br>
+                <label for="minutes_logged">Minutes Studied:</label>
+                <input type="number" id="minutes_logged" name="minutes_logged">
+                <br>
+                <button type="submit">Log Study Time</button>
+            </form>
+        </div>
+
+        <div class="task-form right">
+            <div class="study-right">
+                {% if badge == 'Bronze' %}
+                    <img src="{{ url_for('static', filename='images/bronze.png') }}" width="80" height="80" alt="Bronze">
+                {% elif badge == 'Silver' %}
+                    <img src="{{ url_for('static', filename='images/silver.png') }}" width="80" height="80" alt="Silver">
+                {% elif badge == 'Gold' %}
+                    <img src="{{ url_for('static', filename='images/gold.png') }}" width="80" height="80" alt="Gold">
+                {% elif badge == 'Platinum' %}
+                    <img src="{{ url_for('static', filename='images/platinum.png') }}" width="80" height="80" alt="Platinum">
+                {% endif %}
+
+                {% if streak == 0 %}
+                    <p>Log study to keep streak!</p>
+                {% else %}
+                    <a href="{{ url_for('studylog') }}">Streak: {{ streak }} <img src="{{ url_for('static', filename='images/streak.png') }}" width="25" height="25" alt="Fire"></a>
+                {% endif %}
+                <p>Hours this Week: {{ total_week_hours|round(2) }}hrs</p>
+                <p>Level {{ level }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-section">
+        <h2>Study Logs</h2>
+        <table border="1">
+            <tr>
+                <th>Date</th>
+                <th>Hours</th>
+                <th>Minutes</th>
+            </tr>
+            {% for row in logs %}
+            <tr>
+                {% for item in row %}
+                    <td>{{ item }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</body>

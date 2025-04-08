@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
-    <title>Choose Electives</title>
+    <title>Exam Timetable</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
@@ -27,25 +27,23 @@
             <a href="{{ url_for('logout') }}">Logout</a>
         </nav>
     </div>
-
-    <div class="container">
-        <div class="elective_container">
-            <h2>Select Your Electives</h2>
-
-            <form method="POST">
-                {{ form.hidden_tag() }}
-                <div> {{ form.elec_1() }} </div>
-                <div> {{ form.elec_2() }} </div>
-                <div> {{ form.elec_3() }} </div>
-                <div> {{ form.elec_4() }} </div>
-                <div> {{ form.elec_5() }} </div>
-
-                <div class="button-container">
-                    <button type="submit" class="btn btn-primary choose-btn">Choose Electives</button>
-                    <button type="submit" name="skip" class="btn btn-secondary skip-btn">Skip Electives</button>
-                </div>     
-            </form>
-        </div>
+    
+    <div class="deadlines-table-section">
+        <h2>Exam Timetable</h2>
+        <table>
+         <tr>
+            <th>Module</th>
+            <th>Date</th>
+            <th>Time</th>
+        </tr>
+        {% for row in exam %}
+        <tr>
+            {% for item in row %}
+                <td>{{ item }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </table>
     </div>
 </body>
 </html>

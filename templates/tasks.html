@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+    <title>Tasks</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="banner">
+        <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='images/biglogo.png') }}" class="big-logo" alt="Logo">
+        </a>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">&#9776;</label>
+        <nav class="nav-links">
+            <a href="{{ url_for('index') }}">Return Home</a>
+            <a href="{{ url_for('grades') }}">Grades</a>
+            <a href="{{ url_for('studylog') }}">Study Log</a>
+            <a href="{{ url_for('tasks') }}">Tasks</a>
+            <a href="{{ url_for('deadlines') }}">Deadlines</a>
+            <a href="{{ url_for('exam_timetable') }}">Exam Timetable</a>
+            <a href="{{ url_for('update_scores') }}">Update Scores</a>
+            <a href="{{ url_for('electives') }}">Choose Electives</a>
+            <a href="{{ url_for('get_in_touch') }}">Get in Touch</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </div>
+
+    <div class="form-container">
+        <div class="task-form left">
+            <form action="{{ url_for('tasks') }}" method="POST">
+                <label for="task">Task:</label>
+                <input type="text" id="task" name="task" required>
+                <br>
+                <label for="notes">Notes:</label>
+                <input type="text" id="notes" name="notes">
+                <br>
+                <label for="due_date">Due Date:</label>
+                <input type="date" id="due_date" name="due_date">
+                <br>
+                <button type="submit">Add Task</button>
+            </form>
+        </div>
+
+        <div class="task-form right">
+            <form action="{{ url_for('tasks') }}" method="POST">
+                <p>Mark Task as Completed<p>
+                <label for="remove">Choose Task:</label>
+                <select name="remove" id="remove" required>
+                    {% for task in tasks %}
+                        <option value="{{ task[0] }}">{{ task[0] }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <button type="submit">Mark as Completed</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="table-section">
+        <h2>Tasks</h2>
+        <table border="1">
+            <tr>
+                <th>Task</th>
+                <th>Notes</th>
+                <th>Due Date</th>
+            </tr>
+            {% for row in task_list %}
+            <tr>
+                {% for item in row %}
+                    <td>{{ item }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>

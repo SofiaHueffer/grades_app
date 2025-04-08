@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+    <title>Grades</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="banner">
+        <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='images/biglogo.png') }}" class="big-logo" alt="Logo">
+        </a>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">&#9776;</label>
+        <nav class="nav-links">
+            <a href="{{ url_for('index') }}">Return Home</a>
+            <a href="{{ url_for('grades') }}">Grades</a>
+            <a href="{{ url_for('studylog') }}">Study Log</a>
+            <a href="{{ url_for('tasks') }}">Tasks</a>
+            <a href="{{ url_for('deadlines') }}">Deadlines</a>
+            <a href="{{ url_for('exam_timetable') }}">Exam Timetable</a>
+            <a href="{{ url_for('update_scores') }}">Update Scores</a>
+            <a href="{{ url_for('electives') }}">Choose Electives</a>
+            <a href="{{ url_for('get_in_touch') }}">Get in Touch</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </div>
+
+    <div class="table-section">
+        <h1>Overview</h1>
+    <table border="1">
+        <tr>
+            <th>Year</th>
+            <th>Weight (%)</th>
+            <th>Current Score</th>
+            <th>Current Grade</th>
+            <th>Total Score</th>
+            <th>Total Grade</th>
+        </tr>
+        {% for row in Overview %}
+        <tr>
+            {% for item in row %}
+                <td>{{ item }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+
+    {% if one_count > 0 %}
+        <div class="table-section">
+            <div class="header-container">
+                <h1>Year 1</h1>
+                <a href="{{ url_for('update_scores') }}" class = "update">Update Scores</a>
+                <form action="{{ url_for('min_score', year='1') }}" method="POST" class="target-score-form">
+                    <label for="target_score" class="tooltip-label" data-toggle="tooltip" title="Set target to calculate min score required">Set Target Score for all Modules:</label>
+                    <input type="number" id="target_score" name="target_score" required>
+                    {% for message in get_flashed_messages() %}
+                        <p class="target_flash-message">{{ message }}</p>
+                    {% endfor %}
+                </form>
+            </div>
+            <table border="1">
+                <tr>
+                    <th>Module</th>
+                    <th>Credits</th>
+                    <th>Exam 1</th>
+                    <th>Exam 2</th>
+                    <th>Exam 3</th>
+                    <th>Exam 4</th>
+                    <th>Current Grade</th>
+                    <th>Total Grade</th>
+                    <th>Min Score</th>
+                </tr>
+                {% for row in Year_1 %}
+                <tr>
+                    <td>{{ row[0] }}</td> 
+                    <td>{{ row[1] }}</td> 
+                    <td>{{ row[3] }} <i>{{ row[4] }}</i> {% if row[2] %}
+                        <span style="font-size: 0.8em; color: gray;"> ({{ row[2] }}%)</span>
+                    {% endif %}</td> 
+                    <td>{{ row[6] }}  <i>{{ row[7] }}</i> {% if row[5] %}
+                        <span style="font-size: 0.8em; color: gray;"> ({{ row[5] }}%)</span>
+                    {% endif %}</td> 
+                    <td>{{ row[9] }} <i>{{ row[10] }}</i> {% if row[8] %}
+                        <span style="font-size: 0.8em; color: gray;"> ({{ row[8] }}%)</span>
+                    {% endif %}</td> 
+                    <td>{{ row[12] }} <i>{{ row[13] }}</i> {% if row[11] %}
+                        <span style="font-size: 0.8em; color: gray;"> ({{ row[11] }}%)</span>
+                    {% endif %}</td> 
+                    <td>{{ row[14] }} <i>{{ row[15] }}</i></td> 
+                    <td>{{ row[16] }} <i>{{ row[17] }}</i></td>
+                    <td>{% if row[18] != "" %}{{ row[18] | float | round(1) }}{% else %}{{ row[18] }}{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <p>Total Modules: {{ one_count }}</p>
+        </div>
+    {% endif %}
+
+    {% if two_count > 0 %}
+        <div class="table-section">
+            <div class="header-container">
+                <h1>Year 2</h1>
+                <a href="{{ url_for('update_scores') }}" class = "update">Update Scores</a>
+                <form action="{{ url_for('min_score', year='2') }}" method="POST" class="target-score-form">
+                    <label for="target_score" class="tooltip-label" data-toggle="tooltip" title="Set target to calculate min score required">Set Target Score for all Modules:</label>
+                    <input type="number" id="target_score" name="target_score" required>
+                    {% for message in get_flashed_messages() %}
+                        <p class="target_flash-message">{{ message }}</p>
+                    {% endfor %}
+                </form>
+            </div>
+            <table border="1">
+                <tr>
+                    <th>Module</th>
+                    <th>Credits</th>
+                    <th>Exam 1</th>
+                    <th>Exam 2</th>
+                    <th>Exam 3</th>
+                    <th>Exam 4</th>
+                    <th>Current Grade</th>
+                    <th>Total Grade</th>
+                    <th>Min Score</th>
+                </tr>
+                {% for row in Year_2 %}
+                <tr>
+                    <td>{{ row[0] }}</td> 
+                    <td>{{ row[1] }}</td> 
+                    <td>{{ row[3] }} <i>{{ row[4] }}</i> {% if row[2] %}
+                        <span style="font-size: 0.8em; color: gray;"> ({{ row[2] }}%)</span>
+                    {% endif %}</td> 
+                    <td>{{ row[6] }}  <i>{{ row[7] }}</i> {% if row[5] %}
+                        <span style="font-size: 0.8em; color: gray;"> ({{ row[5] }}%)</span>
+                    {% endif %}</td> 
+                    <td>{{ row[9] }} <i>{{ row[10] }}</i> {% if row[8] %}
+                        <span style="font-size: 0.8em; color: gray;"> ({{ row[8] }}%)</span>
+                    {% endif %}</td> 
+                    <td>{{ row[12] }} <i>{{ row[13] }} {% if row[11] %}
+                        <span style="font-size: 0.8em; color: gray;"> ({{ row[11] }}%)</span>
+                    {% endif %}</td> 
+                    <td>{{ row[14] }} <i>{{ row[15] }}</i></td> 
+                    <td>{{ row[16] }} <i>{{ row[17] }}</i></td>
+                    <td>{% if row[18] != "" %}{{ row[18] | float | round(1) }}{% else %}{{ row[18] }}{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <p>Total Modules: {{ two_count }}</p>
+
+        </div>
+    {% endif %}
+
+    {% if three_count > 0 %}
+        <div class="table-section">
+            <div class="header-container">
+                <h1>Year 3</h1>
+                <a href="{{ url_for('update_scores') }}" class = "update">Update Scores</a>
+                <form action="{{ url_for('min_score', year='3') }}" method="POST" class="target-score-form">
+                    <label for="target_score" class="tooltip-label" data-toggle="tooltip" title="Set target to calculate min score required">Set Target Score for all Modules:</label>
+                    <input type="number" id="target_score" name="target_score" required>
+                    {% for message in get_flashed_messages() %}
+                        <p class="target_flash-message">{{ message }}</p>
+                    {% endfor %}
+                </form>
+            </div>
+            <table border="1">
+                <tr>
+                    <th>Module</th>
+                    <th>Credits</th>
+                    <th>Exam 1</th>
+                    <th>Exam 2</th>
+                    <th>Exam 3</th>
+                    <th>Current Grade</th>
+                    <th>Total Grade</th>
+                    <th>Min Score</th>
+                </tr>
+                {% for row in Year_3 %}
+                <tr>
+                    <td>{{ row[0] }}</td> 
+                    <td>{{ row[1] }}</td> 
+                    <td>{{ row[3] }} <i>{{ row[4] }}</i> {% if row[2] %}
+                        <span style="font-size: 0.8em; color: gray;"> ({{ row[2] }}%)</span>
+                    {% endif %}</td> 
+                    <td>{{ row[6] }}  <i>{{ row[7] }}</i> {% if row[5] %}
+                        <span style="font-size: 0.8em; color: gray;"> ({{ row[5] }}%)</span>
+                    {% endif %}</td> 
+                    <td>{{ row[9] }} <i>{{ row[10] }}</i> {% if row[8] %}
+                        <span style="font-size: 0.8em; color: gray;"> ({{ row[8] }}%)</span>
+                    {% endif %}</td> 
+                    <td>{{ row[14] }} <i>{{ row[15] }}</i></td> 
+                    <td>{{ row[16] }} <i>{{ row[17] }}</i></td>
+                    <td>{% if row[18] != "" %}{{ row[18] | float | round(1) }}{% else %}{{ row[18] }}{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <p>Total Modules: {{ three_count }}</p>
+
+        </div>
+    {% endif %}
+
+    <div class="outro-banner">
+        <div class="outro-content">
+            <div class="left-side">
+                <p>Made by Sofia Hueffer <span class="separator">|</span> All Rights Reserved</p>
+                <p>For any suggestions or issues, please contact </p>
+            </div>
+            <div class="right-side">
+            <p>Email: smhueffer@gmail.com</p>
+            <p>Phone: 07484254531</p>
+        </div>
+    </div>
+
+</body>
+</html>
