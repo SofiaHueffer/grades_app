@@ -680,12 +680,9 @@ def exam_timetable():
 
     return render_template("examtimetable.html", exam=exam)
 
-"""
 @app.route('/favicon.ico')
-@app.route('/favicon.png')
 def favicon():
     return '', 204
-"""
 
 if __name__ == '__main__':
     app.run(debug=True)
