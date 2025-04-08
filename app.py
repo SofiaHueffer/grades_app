@@ -476,8 +476,6 @@ def deadlines():
     cur.execute(f"select Year from users where id = %s", (user_id,))
     user_year = cur.fetchone()[0] 
 
-    from datetime import datetime
-
     cur.execute("""UPDATE Deadlines SET days_left = Date - CURRENT_DATE""")
     conn.commit()
 
@@ -488,6 +486,8 @@ def deadlines():
         "#A0C4FF", "#BDB2FF", "#FFC6FF", "#FFB5E8", "#85E3FF"]
 
     module_colours = {module: colours[i % len(colours)] for i, module in enumerate(all_modules)}
+
+    from datetime import datetime
 
     def replace_none_with_blank(rows):
         processed_rows = []
