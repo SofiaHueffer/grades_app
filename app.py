@@ -665,7 +665,7 @@ def get_in_touch():
         except Exception as e:
             flash(f'Could not send message: {str(e)}', 'danger')
 
-        return redirect(url_for('get_in_touch'))
+        return redirect(request.referrer or url_for('index'))
 
     return render_template("getintouch.html", user_year=user_year)
 

@@ -130,7 +130,7 @@
     <div class="get_in_touch-container">
         <div class="left-box">
             <h2>Get in Touch</h2>
-            <form method="POST">
+            <form method="POST" action="{{ url_for('get_in_touch') }}">
                 <textarea name="message" rows="6" required placeholder="Write message here"></textarea>
                 <button type="submit">Send</button>
             </form>
